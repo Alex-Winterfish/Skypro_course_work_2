@@ -1,5 +1,6 @@
 import json
 import re
+from abc import ABC, abstractmethod
 
 
 class VacancyProc:
@@ -8,7 +9,6 @@ class VacancyProc:
     requirement: str
     vacancy_url: str
     schedule: str
-    vacancy_list: list
 
     __slots__ = ('vacancy_name', 'requirement', 'vacancy_url', 'schedule', 'salary')
 
@@ -59,11 +59,10 @@ class VacancyProc:
         return f'{self.__class__.__name__} ({self.vacancy_name}, {self.vacancy_url})'
 
 
-class FileWriteJson:
-    vacancy_id = 1
+class FileWrite(ABC):
 
-    def __init__(self, vacancy:VacancyProc, file_path='../data/vacancies.json'):
-        self.__file_path = file_path
+    @abstractmethod
+    def __init__(self, vacancy:VacancyProc):
         self.name = vacancy.vacancy_name
         self.salary = vacancy.salary
         self.requirement = vacancy.requirement
@@ -71,10 +70,30 @@ class FileWriteJson:
         self.schedule = vacancy.schedule
         self.vacancy_dict = dict()
 
+    @abstractmethod
+    def vacancy_write(self):
+        pass
+
+    @abstractmethod
+    def vacancy_delite(self, search_string):
+        pass
+
+    @abstractmethod
+    def vacancy_get(self, search_string):
+        pass
+
+
+class FileWriteJson(FileWrite):
+    vacancy_id = 1
+
+    def __init__(self, vacancy:VacancyProc, file_path='../data/vacancies.json'):
+        self.__file_path = file_path
+        super().__init__(vacancy)
 
     @property
-    def json_write(self):
+    def vacancy_write(self):
         'Метод формирует словарь для добавления в файл'
+        super().vacancy_write()
         self.vacancy_dict['Название Вакансии'] = self.name
         self.vacancy_dict['Требования к вакансии'] = self.requirement
         self.vacancy_dict['Зарплата'] = self.salary
@@ -101,11 +120,8 @@ class FileWriteJson:
 
         FileWriteJson.vacancy_id += 1
 
-
-
-
-
-    def json_delite(self, search_string:str):
+    def vacancy_delite(self, search_string:str):
+        super().vacancy_delite(search_string)
 
         try:
             with open(self.__file_path, 'r+') as f:
@@ -123,8 +139,8 @@ class FileWriteJson:
             print(f'Ошибка {e} в модуле json_delite')
 
 
-    def json_get(self,search_string:str):
-
+    def vacancy_get(self,search_string:str):
+        super().vacancy_get(search_string)
         try:
             with open(self.__file_path, 'r') as file:
                 data = json.load(file)
@@ -169,8 +185,9 @@ if __name__ == '__main__':
 
 
     #print(file_vacancy)
-    file_vacancy1.json_delite('монтер')
-    file_vacancy2
-    print(file_vacancy3.json_get('механик'))
-    print(file_vacancy4.vacancy_id)
+    file_vacancy1.vacancy_write
+    file_vacancy2.vacancy_write
+    #file_vacancy4.vacancy_write
+    print(file_vacancy3.vacancy_get('механик'))
+    print(file_vacancy4.vacancy_delite('уБорщик'))
 
