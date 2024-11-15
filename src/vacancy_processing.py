@@ -154,9 +154,20 @@ class FileWriteJson(FileWrite):
                         else:
                             print('Вакансия не найдена')
         except Exception as e:
-            print(f'Ошибка {e} в модуле json_get')
+            print(f'Ошибка {e} в модуле vacancy_get')
 
+    def vacancy_salary(self, min_sal:int, max_sal:int):
+        try:
+            with open(self.__file_path, 'r') as file:
+                data = json.load(file)
 
+            for vacancy in data:
+                if vacancy.get('Зарплата') != 'Зарплата не указана' and min_sal <= int(vacancy.get('Зарплата')) <= max_sal:
+                    return vacancy
+                else:
+                    continue
+        except Exception as e:
+            print(f'Ошибка {e} в модуле vacancy_salary')
 
 
 
@@ -188,6 +199,6 @@ if __name__ == '__main__':
     file_vacancy1.vacancy_write
     file_vacancy2.vacancy_write
     #file_vacancy4.vacancy_write
-    print(file_vacancy3.vacancy_get('механик'))
+    print(file_vacancy3.vacancy_salary(0, 120_000))
     print(file_vacancy4.vacancy_delite('уБорщик'))
 
