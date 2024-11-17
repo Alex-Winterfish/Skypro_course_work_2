@@ -1,34 +1,53 @@
 from src.classes_api import HeadHunterAPI
 from src.vacancy_processing import VacancyProc, FileWriteJson
+from src.support_func import user_request, user_operation, user_interaction,user_file_interaction
 
-def user_request():
-    search_str = input('Введите вакансию: ')
-    vac_lim = input('Введите число вакансий для обработки: ')
-    return search_str, int(vac_lim)
+
+
 
 def main():
 
-    vacancy_search, vacancy_lim = user_request()
+    while True:
 
-    user_vacancy = HeadHunterAPI(vacancy_search)
+        operation_choice = user_operation()
+        if operation_choice in ['1','2']:
+            break
 
-    user_vacancy_list = user_vacancy.vacancy_list[0:vacancy_lim]
+    if operation_choice == '1':
 
-    for i in range(len(user_vacancy_list)):
-        FileWriteJson(VacancyProc.new_vacancy(user_vacancy_list[i])).vacancy_write
 
-def vacancy_processing():
+        while True:
 
-    user_input = input('Какие операции с вакансиями выполнить? \n' 
-                       '1 - поиск по названию\n'
-                       '2 - поиск по вилке зарплат\n'
-                       '3 - удаление')
+            user_input = user_interaction()
+            if user_input in ['1', '2', '3']:
+                break
 
-    if user_input == 1:
-        input_string = input('Что искать?: ')
-        vacancy = FileWriteJson.vacancy_get(input_string)
-        return vacancy
-    elif user_input == 2:
+        user_file_interaction(user_input)
+
+    else:
+
+        vacancy_search, vacancy_lim = user_request()
+
+        user_vacancy = HeadHunterAPI(vacancy_search)
+
+        user_vacancy_lim = user_vacancy.vacancy_list[0:vacancy_lim]
+
+        user_vacancy_list = [VacancyProc.new_vacancy(user_vacancy_lim[i]) for i in range(len(user_vacancy_lim))]
+
+        user_vacancy_list = sorted(user_vacancy_list, reverse=True)
+
+        for i in range(len(user_vacancy_list)):
+            FileWriteJson(user_vacancy_list[i]).vacancy_write
+
+
+        while True:
+
+            user_input = user_interaction()
+            if user_input in ['1','2','3']:
+                break
+
+        user_file_interaction(user_input)
+
 
 
 

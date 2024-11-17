@@ -1,9 +1,8 @@
+import json
 from abc import ABC, abstractmethod
-from codecs import ignore_errors
-from types import NoneType
 
 import requests
-import json
+
 
 
 class VacancyAPI(ABC):
@@ -38,12 +37,12 @@ class HeadHunterAPI(VacancyAPI):
         super()._api_request()
         try:
             response = requests.get(self.__url, headers=self.__headers, params=self.__params)
-            status_code = requests.status_codes
+
             if response.status_code == 200:
                 api_data = response.json()
                 return api_data
         except Exception as e:
-            print(f'Ошибка {e} в модуле api_request {response.status_code}')
+            print(f'Ошибка {e} в модуле api_request {requests.status_code}')
 
     @property
     def _get_vacancies(self):
@@ -70,7 +69,7 @@ class HeadHunterAPI(VacancyAPI):
             vac_list = [] #список для накопления кавансий
             for i in range(len(raw_list)): #в этом цикле перебераем элементы
                 for key, value in raw_list[i].items(): #в этом цикле перебераем словарь
-                    # для получения определенных критериев для вакансии
+                        # для получения определенных критериев для вакансии
                     if key in ['name', 'salary', 'snippet', 'url', 'schedule']:
                         vac_list.append(value)
             result_list = [] #список для накопления итоговых значений
@@ -90,9 +89,8 @@ class HeadHunterAPI(VacancyAPI):
             output_list = []
             for i in range(0,len(result_list), 5): #цикл для формирования списка вакансий
                 output_list.append(result_list[i:i+5])
-            sorted_list = sorted(output_list,
-                                  key=lambda x:[output_list[i][1] for i in range(len(output_list))])
-            return sorted_list
+
+            return output_list
         except TypeError as e:
             print(f'Ошибка {e} в модуле vacancy_list')
 
@@ -103,5 +101,9 @@ class HeadHunterAPI(VacancyAPI):
 if __name__ == '__main__':
     vacancy = HeadHunterAPI('Электромонтер')
 
-    print(vacancy.vacancy_list)
+    #print(vacancy._get_vacancies)
+    with open('../data/dump.json', 'w') as f:
+        data = vacancy._api_request()
+        json.dump(data,f, ensure_ascii=False, indent=1)
+
 
