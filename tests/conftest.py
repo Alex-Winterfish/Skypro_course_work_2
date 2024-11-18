@@ -184,3 +184,8 @@ def test_vacancy_1(test_dummy_vac1):
 def test_vacancy_2(test_dummy_vac2):
     vacancy = VacancyProc.new_vacancy(test_dummy_vac2)
     return vacancy
+
+@pytest.fixture
+def test_file_vacancy(test_vacancy_1):
+    vacancy = FileWriteJson(test_vacancy_1)
+    return vacancy
