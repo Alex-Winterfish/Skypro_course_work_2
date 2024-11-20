@@ -12,10 +12,10 @@ def test_vacancy_init():
     assert vacancy.salary == 100
 
 
-def test_new_vacancy(test_dummy_vac):
+def test_new_vacancy(test_dummy_vac2):
     """Функция проверяет создание класса через конструктор new_vacancy"""
     vacancy = VacancyProc("dummy", "shallow", "url/", "shift", 100)
-    vacancy1 = vacancy.new_vacancy(test_dummy_vac)
+    vacancy1 = vacancy.new_vacancy(test_dummy_vac2)
     assert vacancy1.vacancy_name == "dummy#2"
     assert vacancy1.requirement == "shallow"
     assert vacancy1.vacancy_url == "url/new"
