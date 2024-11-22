@@ -1,4 +1,3 @@
-import json
 from abc import ABC, abstractmethod
 
 import requests
@@ -99,12 +98,3 @@ class HeadHunterAPI(VacancyAPI):
             return output_list
         except TypeError as e:
             print(f"Ошибка {e} в модуле vacancy_list")
-
-
-if __name__ == "__main__":
-    vacancy = HeadHunterAPI("Электромонтер")
-
-    # print(vacancy._get_vacancies)
-    with open("../data/dump.json", "w") as f:
-        data = vacancy._api_request()
-        json.dump(data, f, ensure_ascii=False, indent=1)

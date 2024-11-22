@@ -2,6 +2,8 @@ from src.vacancy_processing import VacancyProc, FileWriteJson
 
 
 def user_operation():
+    """Функция для взаимодействия с пользователем.
+    Запрашивает у пользователя дальнейшие операции после запуска программы"""
     print("Добро пожаловать в программу обработки вакансий")
     user_input = input(
         "Какие операции выполнить?\n"
@@ -12,13 +14,14 @@ def user_operation():
 
 
 def user_request():
+    """Функция запрашивает у пользователя вакансию для выгрузки с НН.ру и число вакансий"""
     search_str = input("Введите вакансию для поиска на HH.ru: ")
     vac_lim = input("Введите число вакансий для обработки: ")
     return search_str, int(vac_lim)
 
 
 def user_interaction():
-
+    """Функция запрашивает у пользователя дальнейшие операции при работе с файлом с вакансиями"""
     user_input = input(
         "Какие операции с вакансиями выполнить? \n"
         "1 - поиск по названию\n"
@@ -30,15 +33,16 @@ def user_interaction():
 
 
 dummy_vac = VacancyProc(
-        0,
-        0,
-        0,
-        0,
-    )
+    0,
+    0,
+    0,
+    0,
+)
 dummy_f_vac = FileWriteJson(dummy_vac)
 
-def user_file_interaction(user_input: str):
 
+def user_file_interaction(user_input: str):
+    """Функция запрашивает у пользователя желаемые операции при работе с файлом с вакансиями"""
     if user_input == "1":
         input_string = input("Что искать?: ")
         vacancy = dummy_f_vac.vacancy_get(input_string)

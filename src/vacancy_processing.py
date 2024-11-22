@@ -182,35 +182,3 @@ class FileWriteJson(FileWrite):
 
         except Exception as e:
             print(f"Ошибка {e} в модуле vacancy_salary")
-
-
-if __name__ == "__main__":
-
-    vacancy1 = VacancyProc("монтер", "kghkh", "sdfd", "sfsf")
-    vacancy2 = VacancyProc("механик", "kghkh", "sdfd", "sfsf", 30000)
-    vacancy3 = VacancyProc.new_vacancy(
-        [
-            "Младший программист C++ (Windows, UNIX)",
-            130000,
-            "https://api.hh.ru/vacancies/109847610?host=hh.ru",
-            "Понимание принципов объектно-ориентированного программирования. Опыт работы на железнодорожном транспорте в части систем управления сигнализацией, централизацией и блокировкой (<highlighttext>СЦБ</highlighttext>), и...",
-            "Электромеханик СЦБ",
-            "полный день",
-        ]
-    )
-    print(vacancy2.salary)
-
-    vacancy4 = VacancyProc("уборщик", "cleaning", "sdfdsf", "sdfd")
-
-    # file_vacancy = FileWriteJson(vacancy2, '../data/vacancies.json').json_write
-    # file_vacancy1 = FileWriteJson(vacancy1)
-    # file_vacancy2 = FileWriteJson(vacancy2)
-    # file_vacancy3 = FileWriteJson(vacancy3)
-    # file_vacancy4 = FileWriteJson(vacancy4)
-
-    # print(file_vacancy)
-    # file_vacancy1.vacancy_write
-    # file_vacancy2.vacancy_write
-    # file_vacancy4.vacancy_write
-    # print(file_vacancy3.vacancy_salary(0, 120_000))
-    # print(file_vacancy4.vacancy_delite('уборщик'))

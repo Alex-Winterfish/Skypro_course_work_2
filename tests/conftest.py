@@ -1,9 +1,11 @@
 import pytest
-from src.vacancy_processing import FileWriteJson, VacancyProc
+from src.vacancy_processing import FileWriteJson, VacancyProc, FileWrite
+from src.classes_api import VacancyAPI
 
 
 @pytest.fixture
 def test_response():
+    """Фикстура возвращиет тестовый ответ от нн.ру"""
     return {
         "items": [
             {
@@ -52,8 +54,12 @@ def test_response():
                     "trusted": "true",
                 },
                 "snippet": {
-                    "requirement": "Необходимо иметь отличную успеваемость в школе, желателен опыт работы в продажах. Коммуникабельность. Обучаемость. Мобильность. Желательно, хороший уровень английского.",
-                    "responsibility": "Общение по телефону с компаниями сфере недропользования(нефть, уран, горнорудное дело) по базе клиентов , созданной компанией в течение 16 лет. ",
+                    "requirement": "Необходимо иметь отличную успеваемость в школе, желателен "
+                                   "опыт работы в продажах. Коммуникабельность. Обучаемость. Мобильность."
+                                   " Желательно, хороший уровень английского.",
+                    "responsibility": "Общение по телефону с компаниями сфере недропользования"
+                                      "(нефть, уран, горнорудное дело) по базе клиентов ,"
+                                      " созданной компанией в течение 16 лет. ",
                 },
                 "contacts": "null",
                 "schedule": {"id": "fullDay", "name": "Полный день"},
@@ -132,7 +138,8 @@ def test_response():
                 },
                 "snippet": {
                     "requirement": "Знание русского языка и компьютера. Умение общаться с людьми.",
-                    "responsibility": "Отвечать на входящие звонки от клиентов. Помогать клиентам с их вопросами. Быть вежливым и дружелюбным.",
+                    "responsibility": "Отвечать на входящие звонки от клиентов. Помогать клиентам с их вопросами. "
+                                      "Быть вежливым и дружелюбным.",
                 },
                 "contacts": "null",
                 "schedule": {"id": "flexible", "name": "Гибкий график"},
@@ -166,26 +173,80 @@ def test_response():
 
 @pytest.fixture
 def test_dummy_vac1():
+    """Фикстура для инициации экземпляра класса"""
     return ["dummy#1", 10, "url/new", "shallow", "shift"]
 
 
 @pytest.fixture
 def test_dummy_vac2():
+    """Фикстура для инициации экземпляра класса"""
     return ["dummy#2", 1000, "url/new", "shallow", "shift"]
 
 
 @pytest.fixture
 def test_vacancy_1(test_dummy_vac1):
+    """Фикстура возвращает экземпляр класса VacancyProc"""
     vacancy = VacancyProc.new_vacancy(test_dummy_vac1)
     return vacancy
 
 
 @pytest.fixture
-def test_vacancy_2(test_dummy_vac2):
-    vacancy = VacancyProc.new_vacancy(test_dummy_vac2)
-    return vacancy
-
-@pytest.fixture
 def test_file_vacancy(test_vacancy_1):
+    """Фикстура возвращает экземпляр класса FileWriteJson"""
     vacancy = FileWriteJson(test_vacancy_1)
     return vacancy
+
+
+@pytest.fixture
+def mock_class_hh():
+    """Фикстура возвращает тестовый класс для мокирования класса HeadHunterAPI"""
+
+    class MockHH(VacancyAPI):
+        def __init__(self, vacancy):
+            super().__init__(vacancy)
+
+        def _api_request(self):
+            super()._api_request()
+            pass
+
+        def _get_vacancies(self):
+            super()._get_vacancies()
+            pass
+
+        @property
+        def vacancy_list(self):
+            list = [
+                [
+                    "Электромеханик СЦБ",
+                    180000,
+                    "https://api.hh.ru/vacancies/109081139?host=hh.ru",
+                    "Опыт работы в строительстве <highlighttext>СЦБ</highlighttext>, связи на РЖД",
+                    "полный день",
+                ],
+                [
+                    "Инженер ПТО (исполнительная документация)",
+                    120000,
+                    "https://api.hh.ru/vacancies/109616009?host=hh.ru",
+                    'Знание AutoCad, Ms Word, Excel. Опыт сдачи ИД на объектах ОАО "РЖД"',
+                    "Полный день",
+                ],
+            ]
+            return list
+
+    return MockHH
+
+
+@pytest.fixture
+def mock_class_file_write():
+    """Фикстура возвращает тестовый класс для мокирования класса FileWriteJson"""
+
+    class MockFileWrite(FileWrite):
+        def __init__(self, vacancy: VacancyProc):
+            self.vacancy = vacancy
+            super().__init__(vacancy)
+
+        def vacancy_write(self):
+            super().vacancy_write()
+            return "test"
+
+    return MockFileWrite

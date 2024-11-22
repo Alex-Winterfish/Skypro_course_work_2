@@ -1,6 +1,6 @@
 from src.vacancy_processing import FileWrite, FileWriteJson, VacancyProc
 from unittest import mock
-from unittest.mock import patch
+
 
 def test_vacancy_init():
     """Функция проверяет инициализацию экземпляра класса"""
@@ -84,24 +84,26 @@ def test_file_write_json_w(test_vacancy_1):
             mock.call("]"),
         ]
 
+
 def test_file_write_json_del(test_vacancy_1):
-    '''Функция проверяет удаление вакансии из файла'''
+    """Функция проверяет удаление вакансии из файла"""
     vacancy = FileWriteJson(test_vacancy_1)
     with mock.patch("builtins.open", mock.mock_open()) as open_mock:
-        vacancy.vacancy_delite('вакансия')
+        vacancy.vacancy_delite("вакансия")
         assert open_mock.call_count == 1
+
 
 def test_file_write_json_get_vac(test_vacancy_1):
-    '''Функция проверяет'''
+    """Функция проверяет"""
     vacancy = FileWriteJson(test_vacancy_1)
     with mock.patch("builtins.open", mock.mock_open()) as open_mock:
-        vacancy.vacancy_get('вакансия')
+        vacancy.vacancy_get("вакансия")
         assert open_mock.call_count == 1
+
 
 def test_file_write_json_get_sal(test_vacancy_1):
-    '''Функция проверяет'''
+    """Функция проверяет"""
     vacancy = FileWriteJson(test_vacancy_1)
     with mock.patch("builtins.open", mock.mock_open()) as open_mock:
-        vacancy.vacancy_salary(0,100)
+        vacancy.vacancy_salary(0, 100)
         assert open_mock.call_count == 1
-

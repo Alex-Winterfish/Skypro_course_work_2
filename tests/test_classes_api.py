@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 @patch("src.classes_api.HeadHunterAPI._api_request")
 def test_init_hh_class_vacancy_list(mock_api_request, test_response):
+    """Функция проверяет работу метода vacancy_list класса HeadHunterAPI"""
     mock_api_request.return_value = test_response
     vacancy1 = HeadHunterAPI("менеджер")
 
@@ -333,6 +334,7 @@ def test_init_hh_class_vacancy_list(mock_api_request, test_response):
 
 @patch("src.classes_api.HeadHunterAPI._api_request")
 def test_init_hh_class_get_vacancy(mock_api_request, test_response):
+    """Функция проверяет работу метода get_vacancy класса HeadHunterAPI"""
     mock_api_request.return_value = test_response
     vacancy2 = HeadHunterAPI("менеджер")
 
@@ -3601,6 +3603,8 @@ def test_init_hh_class_get_vacancy(mock_api_request, test_response):
 
 
 def test_abcstract_class():
+    "Функция проверяет работу абстрактного класса VacancyAPI"
+
     class DummyClass(VacancyAPI):
 
         def __init__(self, vacancy):
